@@ -140,18 +140,32 @@
   .works__head{ display:flex; justify-content:space-between; align-items:baseline; margin-bottom:32px; }
   .works__title{ font-family:var(--head); font-size:22px; font-weight:700; }
   .works__count{ font-family:var(--mono); font-size:13px; color:var(--faint); }
-  .works__grid{ display:grid; grid-template-columns:1fr; gap:64px; }
+  .works__grid{ display:grid; grid-template-columns:1fr 1fr; gap:40px; }
 
-  /* картинка кейса — во всю ширину контента, кадр прижат к верху */
-  .work__media{ aspect-ratio:16/9; border-radius:8px; overflow:hidden; border:1px solid var(--hair); }
-  .work__media img{ width:100%; height:100%; object-fit:cover; object-position:top; }
+  .work__media{ border-radius:8px; overflow:hidden; border:1px solid var(--hair); }
+  .work__media img{ width:100%; height:100%; object-fit:cover; }
+  .work__row{ display:flex; justify-content:space-between; align-items:baseline; }
+  .work__title{ margin:0; font-family:var(--head); font-weight:700; }
+  .work__num{ font-family:var(--mono); font-size:12px; color:var(--accent); }
+  .work__tag{ font-size:13px; text-transform:uppercase; letter-spacing:.06em; color:var(--faint); }
+  .work__desc{ font-size:15px; line-height:1.5; color:var(--body); }
 
-  /* подпись кейса под картинкой: слева мета-рейка (№ + тег), справа заголовок + описание */
-  .work__cap{ margin-top:22px; display:grid; grid-template-columns:0.5fr 1.5fr; gap:48px; align-items:start; }
-  .work__num{ font-family:var(--mono); font-size:12px; color:var(--accent); letter-spacing:.04em; }
-  .work__tag{ margin-top:8px; font-size:13px; text-transform:uppercase; letter-spacing:.06em; color:var(--faint); line-height:1.4; }
-  .work__title{ margin:0; font-family:var(--head); font-size:30px; font-weight:700; letter-spacing:-0.015em; line-height:1.12; }
-  .work__desc{ margin:14px 0 0 0; font-size:16px; line-height:1.6; color:var(--body); max-width:62ch; }
+  .work--feature{
+    grid-column:1 / -1; display:grid;
+    grid-template-columns:1.08fr 0.92fr; gap:48px; align-items:center;
+  }
+  .work--feature .work__media{ aspect-ratio:16/10; }
+  .work--feature .work__media img{ object-position:center; }
+  .work--feature .work__title{ font-size:30px; letter-spacing:-0.015em; }
+  .work--feature .work__tag{ margin-top:6px; }
+  .work--feature .work__desc{ margin:14px 0 0 0; font-size:16px; line-height:1.55; }
+
+  .work--card .work__media{ aspect-ratio:4/3; }
+  .work--card .work__media img{ object-position:top; }
+  .work--card .work__row{ margin-top:16px; }
+  .work--card .work__title{ font-size:22px; letter-spacing:-0.01em; }
+  .work--card .work__tag{ margin-top:5px; }
+  .work--card .work__desc{ margin:8px 0 0 0; }
 
   /* services */
   .services{
@@ -191,6 +205,7 @@
     .about{ grid-template-columns:1fr; gap:40px; }
     .about__lead{ border-right:none; padding-right:0; }
     .works__grid{ grid-template-columns:1fr; }
+    .work--feature{ grid-template-columns:1fr; gap:24px; }
     .services{ grid-template-columns:1fr; gap:40px; }
   }
 
@@ -205,8 +220,6 @@
     .hero__role{ font-size:22px; margin-top:12px; }
     .about__lead .lead{ font-size:26px; }
     .about__lead p + p{ font-size:16px; }
-    .work__cap{ grid-template-columns:1fr; gap:6px; }
-    .work__title{ font-size:24px; }
     .feats{ grid-template-columns:1fr; }
     .feat,
     .feat:nth-child(odd),
@@ -292,46 +305,27 @@
       </div>
       <div class="works__grid">
 
-        <article class="work">
+        <article class="work work--feature">
           <div class="work__media"><img src="assets/work-dubai.jpg" alt="Недвижимость в Дубае"></div>
-          <div class="work__cap">
-            <div>
-              <span class="work__num">01</span>
-              <div class="work__tag">Маркетплейс · недвижимость</div>
-            </div>
-            <div>
-              <h3 class="work__title">Недвижимость в Дубае</h3>
-              <p class="work__desc">Маркетплейс недвижимости в Дубае для инвестиций: подбор объектов, фильтры, карточки и работа с застройщиками. Дизайн интерфейса и продакшн-макеты.</p>
-            </div>
+          <div>
+            <div class="work__row"><h3 class="work__title">Недвижимость в Дубае</h3><span class="work__num">01</span></div>
+            <div class="work__tag">Маркетплейс · недвижимость</div>
+            <p class="work__desc">Маркетплейс недвижимости в Дубае для инвестиций: подбор объектов, фильтры, карточки и работа с застройщиками. Дизайн интерфейса и продакшн-макеты.</p>
           </div>
         </article>
 
-        <article class="work">
+        <article class="work work--card">
           <div class="work__media"><img src="assets/work-university.jpg" alt="Педиатрический университет"></div>
-          <div class="work__cap">
-            <div>
-              <span class="work__num">02</span>
-              <div class="work__tag">Веб-платформа · образование</div>
-            </div>
-            <div>
-              <h3 class="work__title">Педиатрический университет</h3>
-              <p class="work__desc">Сайт медицинского университета: сложная навигация, разделы для абитуриентов, пациентов и врачей, новости и СМИ.</p>
-            </div>
-          </div>
+          <div class="work__row"><h3 class="work__title">Педиатрический университет</h3><span class="work__num">02</span></div>
+          <div class="work__tag">Веб-платформа · образование</div>
+          <p class="work__desc">Сайт медицинского университета: сложная навигация, разделы для абитуриентов, пациентов и врачей, новости и СМИ.</p>
         </article>
 
-        <article class="work">
+        <article class="work work--card">
           <div class="work__media"><img src="assets/work-memory.jpg" alt="Национальный портал памяти"></div>
-          <div class="work__cap">
-            <div>
-              <span class="work__num">03</span>
-              <div class="work__tag">Гос-портал · AI · карта</div>
-            </div>
-            <div>
-              <h3 class="work__title">Национальный портал памяти</h3>
-              <p class="work__desc">Портал о памяти: книга памяти, интерактивная карта мест и поиск по документам. Строгая типографика и большой объём данных.</p>
-            </div>
-          </div>
+          <div class="work__row"><h3 class="work__title">Национальный портал памяти</h3><span class="work__num">03</span></div>
+          <div class="work__tag">Гос-портал · AI · карта</div>
+          <p class="work__desc">Портал о памяти: книга памяти, интерактивная карта мест и поиск по документам. Строгая типографика и большой объём данных.</p>
         </article>
 
       </div>
