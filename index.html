@@ -140,7 +140,7 @@
   .works__head{ display:flex; justify-content:space-between; align-items:baseline; margin-bottom:32px; }
   .works__title{ font-family:var(--head); font-size:22px; font-weight:700; }
   .works__count{ font-family:var(--mono); font-size:13px; color:var(--faint); }
-  .works__grid{ display:grid; grid-template-columns:1fr 1fr; gap:40px; }
+  .works__grid{ display:grid; grid-template-columns:1fr; gap:64px; }
 
   .work__media{ border-radius:8px; overflow:hidden; border:1px solid var(--hair); }
   .work__media img{ width:100%; height:100%; object-fit:cover; }
@@ -160,12 +160,8 @@
   .work--feature .work__tag{ margin-top:6px; }
   .work--feature .work__desc{ margin:14px 0 0 0; font-size:16px; line-height:1.55; }
 
-  .work--card .work__media{ aspect-ratio:4/3; }
-  .work--card .work__media img{ object-position:top; }
-  .work--card .work__row{ margin-top:16px; }
-  .work--card .work__title{ font-size:22px; letter-spacing:-0.01em; }
-  .work--card .work__tag{ margin-top:5px; }
-  .work--card .work__desc{ margin:8px 0 0 0; }
+  /* высокие скриншоты — показываем верх страницы, не центр */
+  .work__media--top img{ object-position:top; }
 
   /* services */
   .services{
@@ -314,18 +310,22 @@
           </div>
         </article>
 
-        <article class="work work--card">
-          <div class="work__media"><img src="assets/work-university.jpg" alt="Педиатрический университет"></div>
-          <div class="work__row"><h3 class="work__title">Педиатрический университет</h3><span class="work__num">02</span></div>
-          <div class="work__tag">Веб-платформа · образование</div>
-          <p class="work__desc">Сайт медицинского университета: сложная навигация, разделы для абитуриентов, пациентов и врачей, новости и СМИ.</p>
+        <article class="work work--feature">
+          <div class="work__media work__media--top"><img src="assets/work-university.jpg" alt="Педиатрический университет"></div>
+          <div>
+            <div class="work__row"><h3 class="work__title">Педиатрический университет</h3><span class="work__num">02</span></div>
+            <div class="work__tag">Веб-платформа · образование</div>
+            <p class="work__desc">Сайт медицинского университета: сложная навигация, разделы для абитуриентов, пациентов и врачей, новости и СМИ.</p>
+          </div>
         </article>
 
-        <article class="work work--card">
-          <div class="work__media"><img src="assets/work-memory.jpg" alt="Национальный портал памяти"></div>
-          <div class="work__row"><h3 class="work__title">Национальный портал памяти</h3><span class="work__num">03</span></div>
-          <div class="work__tag">Гос-портал · AI · карта</div>
-          <p class="work__desc">Портал о памяти: книга памяти, интерактивная карта мест и поиск по документам. Строгая типографика и большой объём данных.</p>
+        <article class="work work--feature">
+          <div class="work__media work__media--top"><img src="assets/work-memory.jpg" alt="Национальный портал памяти"></div>
+          <div>
+            <div class="work__row"><h3 class="work__title">Национальный портал памяти</h3><span class="work__num">03</span></div>
+            <div class="work__tag">Гос-портал · AI · карта</div>
+            <p class="work__desc">Портал о памяти: книга памяти, интерактивная карта мест и поиск по документам. Строгая типографика и большой объём данных.</p>
+          </div>
         </article>
 
       </div>
