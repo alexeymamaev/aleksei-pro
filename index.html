@@ -223,6 +223,27 @@
     .contact{ flex-direction:column; align-items:flex-start; gap:24px; }
     .contact__title{ font-size:30px; }
   }
+
+  /* ── lightbox (превью работ по клику) ── */
+  .work__media{ cursor:zoom-in; }
+  .work__media img{ transition:transform .45s ease; }
+  .work__media:hover img{ transform:scale(1.03); }
+  .lb{
+    position:fixed; inset:0; z-index:1000; display:none;
+    background:rgba(17,17,17,.92); padding:48px 24px; overflow:auto;
+    -webkit-backdrop-filter:blur(2px); backdrop-filter:blur(2px);
+  }
+  .lb.open{ display:block; animation:lbfade .18s ease; }
+  @keyframes lbfade{ from{ opacity:0 } to{ opacity:1 } }
+  .lb__inner{ min-height:100%; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:16px; }
+  .lb__img{ max-width:min(900px, 92vw); width:100%; height:auto; border-radius:8px; box-shadow:0 24px 70px rgba(0,0,0,.55); }
+  .lb__cap{ color:#cfcfca; font-family:var(--mono); font-size:12px; letter-spacing:.08em; text-transform:uppercase; }
+  .lb__close{
+    position:fixed; top:16px; right:20px; width:44px; height:44px; z-index:2;
+    border:none; border-radius:50%; background:rgba(255,255,255,.12);
+    color:#fff; font-size:26px; line-height:44px; text-align:center; cursor:pointer; padding:0;
+  }
+  .lb__close:hover{ background:rgba(255,255,255,.22); }
 </style>
 </head>
 
@@ -356,5 +377,36 @@
 
   </div>
 </div>
+
+<!-- lightbox -->
+<div class="lb" id="lb" aria-hidden="true" role="dialog" aria-modal="true">
+  <button class="lb__close" type="button" aria-label="Закрыть">&times;</button>
+  <div class="lb__inner">
+    <img class="lb__img" id="lb-img" src="" alt="">
+    <div class="lb__cap" id="lb-cap"></div>
+  </div>
+</div>
+<script>
+(function(){
+  var lb = document.getElementById('lb'),
+      img = document.getElementById('lb-img'),
+      cap = document.getElementById('lb-cap');
+  function open(src, alt){
+    img.src = src; img.alt = alt || ''; cap.textContent = alt || '';
+    lb.classList.add('open'); lb.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+  }
+  function close(){
+    lb.classList.remove('open'); lb.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = ''; img.src = '';
+  }
+  document.querySelectorAll('.work__media img').forEach(function(el){
+    el.addEventListener('click', function(){ open(el.getAttribute('src'), el.getAttribute('alt')); });
+  });
+  // клик по фону/подписи/крестику закрывает; по самой картинке — нет
+  lb.addEventListener('click', function(e){ if (e.target !== img) close(); });
+  document.addEventListener('keydown', function(e){ if (e.key === 'Escape') close(); });
+})();
+</script>
 </body>
 </html>
