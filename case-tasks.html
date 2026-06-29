@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Приложение для задач — кейс · Алексей Мамаев</title>
+<meta name="description" content="Кейс: мобильный таск-менеджер с тёплой тёмной темой. Проекты, задачи на сегодня, планы и треки привычек. Дизайн интерфейса от идеи до продакшн-макетов.">
+
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="icon" href="favicon-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="theme-color" content="#3a3a36">
+
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://aleksei.pro/case-tasks.html">
+<meta property="og:title" content="Приложение для задач — кейс">
+<meta property="og:description" content="Мобильный таск-менеджер с тёплой тёмной темой: проекты, задачи на сегодня, планы и треки привычек.">
+<meta property="og:image" content="https://aleksei.pro/assets/task-app-1.jpg">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --accent:#3a3a36;
+    --accent-soft:#e3e3e3;
+    --canvas:#e9e9e7;
+    --panel:#ffffff;
+    --ink:#111111;
+    --hair:#ececec;
+    --body:#555555;
+    --muted:#7a7a78;
+    --faint:#aaaaaa;
+    --ph1:#f3f3f2;
+    --phlabel:#b0b0ae;
+    --sans:'Helvetica Neue', Helvetica, Arial, sans-serif;
+    --mono:'SF Mono', ui-monospace, Menlo, monospace;
+    --head:'Onest', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    --head-track:-0.025em;
+    --pad:72px;
+  }
+
+  *{ box-sizing:border-box; }
+  html{ scroll-behavior:smooth; }
+  body{
+    margin:0;
+    background:var(--canvas);
+    color:var(--ink);
+    font-family:var(--sans);
+    -webkit-font-smoothing:antialiased;
+    text-rendering:optimizeLegibility;
+  }
+  ::selection{ background:var(--accent); color:#f3f1ea; }
+  img{ display:block; max-width:100%; }
+  a{ color:inherit; }
+
+  .page{ max-width:1240px; margin:0 auto; padding:0 24px; }
+  .panel{ background:var(--panel); box-shadow:0 1px 3px rgba(0,0,0,.10); margin:24px 0 48px; }
+
+  .btn{
+    display:inline-block; text-decoration:none;
+    background:var(--accent); color:#f4f2ea;
+    font-weight:600; border-radius:6px;
+    transition:opacity .15s ease;
+  }
+  .btn:hover{ opacity:.88; }
+
+  /* nav with avatar */
+  .cnav{
+    display:flex; justify-content:space-between; align-items:center; gap:24px;
+    padding:20px var(--pad); border-bottom:1px solid var(--hair);
+  }
+  .cnav__left{ display:flex; align-items:center; gap:16px; }
+  .cnav__ava{ width:40px; height:40px; border-radius:50%; overflow:hidden; border:1px solid var(--hair); flex-shrink:0; }
+  .cnav__ava img{ width:100%; height:100%; object-fit:cover; object-position:50% 30%; }
+  .cnav__logo{ text-decoration:none; font-family:var(--head); font-size:18px; font-weight:700; letter-spacing:-0.02em; color:var(--ink); }
+  .cnav__right{ display:flex; align-items:center; gap:36px; }
+  .cnav__link{ text-decoration:none; color:var(--ink); font-size:16px; font-weight:500; }
+  .cnav__link:hover{ color:var(--accent); }
+  .cnav .btn{ font-size:15px; padding:11px 20px; }
+
+  /* back link */
+  .back{ padding:24px var(--pad) 0; }
+  .back a{
+    text-decoration:none; display:inline-flex; align-items:center; gap:10px;
+    font-family:var(--mono); font-size:13px; letter-spacing:.04em; text-transform:uppercase; color:var(--muted);
+  }
+  .back a:hover{ color:var(--accent); }
+  .back a span{ font-size:16px; }
+
+  /* case hero */
+  .chero{
+    padding:32px var(--pad) 48px; display:grid;
+    grid-template-columns:1.4fr 1fr; gap:64px; align-items:end;
+    border-bottom:1px solid var(--hair);
+  }
+  .chero__kicker{ font-family:var(--mono); font-size:13px; letter-spacing:.06em; text-transform:uppercase; color:var(--accent); margin-bottom:18px; }
+  .chero h1{ margin:0; font-family:var(--head); font-size:74px; line-height:0.95; letter-spacing:var(--head-track); font-weight:700; }
+  .chero__lead{ margin:26px 0 0; font-size:19px; line-height:1.55; color:var(--body); max-width:44ch; }
+
+  .meta{ display:grid; grid-template-columns:1fr 1fr; gap:28px 24px; padding-bottom:6px; }
+  .meta__k{ font-family:var(--mono); font-size:11px; letter-spacing:.08em; text-transform:uppercase; color:var(--faint); }
+  .meta__v{ font-size:16px; font-weight:600; margin-top:6px; }
+
+  /* overview */
+  .overview{ padding:48px var(--pad); border-bottom:1px solid var(--hair); }
+  .overview__grid{ display:grid; grid-template-columns:200px 1fr; gap:48px; }
+  .overview__label{ font-family:var(--head); font-size:18px; font-weight:700; }
+  .overview p{ margin:0; font-size:20px; line-height:1.6; color:var(--body); max-width:62ch; }
+
+  /* screens */
+  .screens{ padding:64px var(--pad) 8px; }
+  .screen{ display:grid; gap:72px; align-items:center; margin-bottom:96px; }
+  .screen--mt{ grid-template-columns:360px 1fr; }
+  .screen--tm{ grid-template-columns:1fr 360px; }
+  .screen__num{ font-family:var(--mono); font-size:13px; color:var(--accent); margin-bottom:14px; }
+  .screen h3{ margin:0; font-family:var(--head); font-size:34px; font-weight:700; letter-spacing:-0.02em; line-height:1.1; }
+  .screen p{ margin:18px 0 0; font-size:18px; line-height:1.6; color:var(--body); max-width:50ch; }
+
+  .frame{
+    background:var(--accent-soft); border-radius:24px; padding:36px 36px 0;
+    display:flex; justify-content:center; align-items:flex-end; overflow:hidden;
+  }
+  .frame img{ width:100%; border-radius:28px 28px 0 0; box-shadow:0 18px 50px rgba(0,0,0,.28); }
+  .frame--ph{
+    background:var(--ph1); border:1px dashed var(--phlabel); padding:0;
+    aspect-ratio:1284/2778; flex-direction:column; align-items:center; justify-content:center; gap:8px;
+  }
+  .frame--ph .plus{ font-size:28px; color:var(--phlabel); }
+  .frame--ph .lbl{ font-family:var(--mono); font-size:11px; letter-spacing:.08em; text-transform:uppercase; color:var(--phlabel); }
+
+  /* end cta */
+  .cend{
+    padding:56px var(--pad) 64px; border-top:1px solid var(--hair);
+    display:flex; justify-content:space-between; align-items:center; gap:32px; flex-wrap:wrap;
+  }
+  .cend__title{ font-family:var(--head); font-size:32px; font-weight:700; letter-spacing:-0.02em; line-height:1.1; }
+  .cend__sub{ font-size:16px; color:var(--muted); margin-top:10px; }
+  .cend .btn{ font-size:17px; padding:16px 30px; white-space:nowrap; }
+
+  /* ── tablet ── */
+  @media (max-width:1000px){
+    :root{ --pad:40px; }
+    .chero{ grid-template-columns:1fr; gap:36px; align-items:start; }
+    .overview__grid{ grid-template-columns:1fr; gap:18px; }
+    .screen{ grid-template-columns:1fr !important; gap:32px; margin-bottom:64px; }
+    .frame, .frame--ph{ order:-1; max-width:360px; margin:0 auto; width:100%; }
+  }
+
+  /* ── mobile ── */
+  @media (max-width:600px){
+    :root{ --pad:24px; }
+    .page{ padding:0 14px; }
+    .cnav{ padding:16px var(--pad); }
+    .cnav__link{ display:none; }
+    .cnav .btn{ font-size:14px; padding:10px 16px; }
+    .chero h1{ font-size:44px; }
+    .chero__lead{ font-size:17px; }
+    .meta{ gap:22px 20px; }
+    .overview p{ font-size:17px; }
+    .screen h3{ font-size:26px; }
+    .screen p{ font-size:16px; }
+    .frame, .frame--ph{ max-width:280px; }
+    .cend__title{ font-size:26px; }
+  }
+</style>
+</head>
+
+<body>
+<div class="page">
+  <div class="panel">
+
+    <!-- nav with avatar -->
+    <nav class="cnav">
+      <div class="cnav__left">
+        <a class="cnav__ava" href="index.html"><img src="assets/portrait-red.png" alt="Алексей Мамаев"></a>
+        <a class="cnav__logo" href="index.html">aleksei.pro</a>
+      </div>
+      <div class="cnav__right">
+        <a class="cnav__link" href="index.html#works">Работы</a>
+        <a class="cnav__link" href="index.html#about">Обо мне</a>
+        <a class="btn" href="https://t.me/alexmamaev">Написать в Telegram</a>
+      </div>
+    </nav>
+
+    <!-- back link -->
+    <div class="back">
+      <a href="index.html#works"><span>←</span> Назад ко всем проектам</a>
+    </div>
+
+    <!-- case hero -->
+    <header class="chero">
+      <div>
+        <div class="chero__kicker">Кейс 02 · Личный продукт</div>
+        <h1>Приложение<br>для задач</h1>
+        <p class="chero__lead">Мобильный таск-менеджер с тёплой тёмной темой: проекты, задачи на сегодня, планы и треки привычек. Дизайн интерфейса от идеи до продакшн-макетов.</p>
+      </div>
+      <div class="meta">
+        <div><div class="meta__k">Роль</div><div class="meta__v">Продуктовый дизайн, UI/UX</div></div>
+        <div><div class="meta__k">Платформа</div><div class="meta__v">iOS · мобильное</div></div>
+        <div><div class="meta__k">Год</div><div class="meta__v">2025</div></div>
+        <div><div class="meta__k">Статус</div><div class="meta__v">В разработке</div></div>
+      </div>
+    </header>
+
+    <!-- overview -->
+    <section class="overview">
+      <div class="overview__grid">
+        <div class="overview__label">О проекте</div>
+        <p>Хотелось таск-менеджер, который не давит списками и не выглядит как корпоративная таблица. Тёплая тёмная палитра, крупная типографика и карточки задач с иконками категорий — приложение остаётся спокойным даже когда задач много. Ниже — ключевые экраны и решения за ними.</p>
+      </div>
+    </section>
+
+    <!-- screens -->
+    <section class="screens">
+
+      <!-- screen 1 -->
+      <div class="screen screen--mt">
+        <div class="frame">
+          <img src="assets/task-app-1.jpg" alt="Экран задач — категории">
+        </div>
+        <div>
+          <div class="screen__num">01</div>
+          <h3>Все задачи по категориям</h3>
+          <p>Главный экран группирует задачи по проектам — «Работа», «Личное», «Сад». Категории сворачиваются, у каждой свой счётчик и иконка, а карточки задач с датой и пиктограммой читаются с одного взгляда. Фильтр «Все / Сегодня» вверху переключает фокус, не уводя с экрана.</p>
+        </div>
+      </div>
+
+      <!-- screen 2 (text · placeholder) -->
+      <div class="screen screen--tm">
+        <div>
+          <div class="screen__num">02</div>
+          <h3>Заголовок экрана</h3>
+          <p>[Замените на свой второй экран и абзац: что на нём, какую задачу решает, какое дизайн-решение вы приняли и почему. Скрин подставится в рамку справа.]</p>
+        </div>
+        <div class="frame frame--ph">
+          <div class="plus">+</div>
+          <div class="lbl">скрин · 9:19.5</div>
+        </div>
+      </div>
+
+      <!-- screen 3 (placeholder · text) -->
+      <div class="screen screen--mt">
+        <div class="frame frame--ph">
+          <div class="plus">+</div>
+          <div class="lbl">скрин · 9:19.5</div>
+        </div>
+        <div>
+          <div class="screen__num">03</div>
+          <h3>Заголовок экрана</h3>
+          <p>[Замените на свой третий экран и абзац. Раскладка чередуется: скрин слева, текст справа — так несколько вертикальных экранов идут крупно и ритмично.]</p>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- end cta -->
+    <div class="cend">
+      <div>
+        <div class="cend__title">Посмотреть другие проекты</div>
+        <div class="cend__sub">Недвижимость в Дубае · Педиатрический университет · Портал памяти</div>
+      </div>
+      <a class="btn" href="index.html#works">← Ко всем проектам</a>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>
