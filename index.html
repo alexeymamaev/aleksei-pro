@@ -226,6 +226,19 @@
     font-size:9vw;
   }
 
+  /* маленький аватар-лого, выезжает слева и фиксируется при скролле */
+  .floatava{
+    position:fixed; left:22px; top:26px; z-index:50;
+    width:40px; height:40px; border-radius:50%; overflow:hidden;
+    padding:0; border:none; background:none; cursor:pointer;
+    box-shadow:0 6px 22px rgba(0,0,0,.18);
+    transform:translateX(-160%); opacity:0;
+    transition:transform .55s cubic-bezier(.22,.61,.36,1), opacity .4s ease;
+  }
+  .floatava.is-in{ transform:translateX(0); opacity:1; }
+  .floatava img{ width:100%; height:100%; object-fit:cover; object-position:50% 30%; display:block; }
+  @media (max-width:1000px){ .floatava{ display:none; } }
+
   /* ── tablet ── */
   @media (max-width:1000px){
     :root{ --pad:40px; }
@@ -408,28 +421,42 @@
 </div>
 <footer class="namefoot">Алексей Мамаев</footer>
 
+<a class="floatava" id="floatava" aria-label="Наверх" title="Наверх"><img src="assets/portrait-red.png" alt=""></a>
+
 <script>
-/* Аватар в hero — 3D-наклон «лицом к курсору» (rotateX/rotateY, до ±16°);
-   сильнее у аватара, плавно гаснет, когда курсор далеко. Плавность — CSS transition. */
+/* Hero-аватар укатывается вправо по скроллу; на блоке «Обо мне» слева выезжает
+   маленький аватар-лого и фиксируется. Уведёшь вверх — оба возвращаются. */
 (function(){
   var img = document.querySelector('.hero__img');
-  if(!img || !window.matchMedia('(hover:hover)').matches) return;
-  var MAX = 16; // максимальный наклон, градусы
-  function set(rx, ry){
-    img.style.transform = 'perspective(900px) rotateX(' + rx.toFixed(2) + 'deg) rotateY(' + ry.toFixed(2) + 'deg)';
+  var about = document.getElementById('about');
+  var ava = document.getElementById('floatava');
+  if(!img) return;
+  var TRAVEL = 660;   // укат большого аватара вправо, px
+  var SPIN = 200;     // вращение колеса за полный укат, градусы
+  var ticking = false;
+
+  function render(){
+    ticking = false;
+    var wide = window.innerWidth > 1000;
+    if(wide){
+      var roll = (window.scrollY || 0) / (window.innerHeight * 0.7);
+      roll = Math.max(0, Math.min(1, roll));
+      img.style.transform =
+        'translateX(' + (roll * TRAVEL).toFixed(1) + 'px) rotate(' + (roll * SPIN).toFixed(1) + 'deg)';
+    } else {
+      img.style.transform = '';
+    }
+    if(ava && about){
+      var show = wide && about.getBoundingClientRect().top <= window.innerHeight * 0.35;
+      ava.classList.toggle('is-in', !!show);
+    }
   }
-  window.addEventListener('mousemove', function(e){
-    var r = img.getBoundingClientRect();
-    var cx = r.left + r.width / 2, cy = r.top + r.height / 2;
-    var nx = (e.clientX - cx) / (r.width / 2);   // -1..1 на краях картинки
-    var ny = (e.clientY - cy) / (r.height / 2);
-    var dist = Math.hypot(nx, ny);               // 1 = край, >1 = снаружи
-    var falloff = dist <= 1 ? 1 : Math.max(0, 1 - (dist - 1) / 1.5);
-    nx = Math.max(-1, Math.min(1, nx));
-    ny = Math.max(-1, Math.min(1, ny));
-    set(ny * MAX * falloff, -nx * MAX * falloff);
-  }, {passive:true});
-  document.addEventListener('mouseleave', function(){ set(0, 0); });
+  function schedule(){ if(!ticking){ ticking = true; requestAnimationFrame(render); } }
+
+  window.addEventListener('scroll', schedule, {passive:true});
+  window.addEventListener('resize', schedule, {passive:true});
+  if(ava) ava.addEventListener('click', function(){ window.scrollTo({top:0, behavior:'smooth'}); });
+  render();
 })();
 </script>
 </body>
