@@ -62,7 +62,7 @@
   .btn{
     display:inline-block; text-decoration:none;
     background:var(--accent); color:#f4f2ea;
-    font-weight:600; border-radius:6px;
+    font-weight:600; border-radius:30px;
     transition:opacity .15s ease;
   }
   .btn:hover{ opacity:.88; }
@@ -81,22 +81,26 @@
   .cnav__link:hover{ color:var(--accent); }
   .cnav .btn{ font-size:15px; padding:11px 20px; }
 
-  /* back link */
-  .back{ padding:24px var(--pad) 0; }
-  .back a{
-    text-decoration:none; display:inline-flex; align-items:center; gap:10px;
-    font-family:var(--mono); font-size:13px; letter-spacing:.04em; text-transform:uppercase; color:var(--muted);
-  }
-  .back a:hover{ color:var(--accent); }
-  .back a span{ font-size:16px; }
-
   /* case hero */
   .chero{
-    padding:32px var(--pad) 48px; display:grid;
-    grid-template-columns:1.4fr 1fr; gap:64px; align-items:end;
+    padding:32px var(--pad) 48px;
     border-bottom:1px solid var(--hair);
   }
-  .chero__kicker{ font-family:var(--mono); font-size:13px; letter-spacing:.06em; text-transform:uppercase; color:var(--accent); margin-bottom:18px; }
+  .chero__bar{
+    display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center;
+    gap:14px 24px; margin-bottom:40px;
+  }
+  .chero__back{
+    text-decoration:none; display:inline-flex; align-items:center; gap:10px;
+    font-family:var(--mono); font-size:13px; letter-spacing:.04em; text-transform:uppercase;
+    color:var(--muted); white-space:nowrap;
+  }
+  .chero__back:hover{ color:var(--accent); }
+  .chero__back span{ font-size:16px; }
+  .chero__grid{
+    display:grid; grid-template-columns:1.4fr 1fr; gap:64px; align-items:end;
+  }
+  .chero__kicker{ font-family:var(--mono); font-size:13px; letter-spacing:.06em; text-transform:uppercase; color:var(--accent); white-space:nowrap; }
   .chero h1{ margin:0; font-family:var(--head); font-size:74px; line-height:0.95; letter-spacing:var(--head-track); font-weight:700; }
   .chero__lead{ margin:26px 0 0; font-size:19px; line-height:1.55; color:var(--body); max-width:44ch; }
 
@@ -155,7 +159,7 @@
   /* ── tablet ── */
   @media (max-width:1000px){
     :root{ --pad:40px; }
-    .chero{ grid-template-columns:1fr; gap:36px; align-items:start; }
+    .chero__grid{ grid-template-columns:1fr; gap:36px; align-items:start; }
     .overview__grid{ grid-template-columns:1fr; gap:18px; }
     .screen{ grid-template-columns:1fr !important; gap:32px; margin-bottom:64px; }
     .frame, .frame--ph{ order:-1; max-width:360px; margin:0 auto; width:100%; }
@@ -197,23 +201,23 @@
       </div>
     </nav>
 
-    <!-- back link -->
-    <div class="back">
-      <a href="index.html#works"><span>←</span> Назад ко всем проектам</a>
-    </div>
-
     <!-- case hero -->
     <header class="chero">
-      <div>
+      <div class="chero__bar">
         <div class="chero__kicker">Кейс 02 · Личный продукт</div>
-        <h1>Приложение<br>для задач</h1>
-        <p class="chero__lead">Один и тот же список задач, показанный с разных ракурсов. Придумал, нарисовал и собрал сам — от гипотезы до приложения, которым пользуюсь каждый день.</p>
+        <a class="chero__back" href="index.html#works"><span>←</span> Назад ко всем проектам</a>
       </div>
-      <div class="meta">
+      <div class="chero__grid">
+        <div>
+          <h1>Приложение<br>для задач</h1>
+          <p class="chero__lead">Один и тот же список задач, показанный с разных ракурсов. Придумал, нарисовал и собрал сам — от гипотезы до приложения, которым пользуюсь каждый день.</p>
+        </div>
+        <div class="meta">
         <div><div class="meta__k">Роль</div><div class="meta__v">Идея, дизайн и разработка</div></div>
         <div><div class="meta__k">Платформа</div><div class="meta__v">PWA · iPhone</div></div>
         <div><div class="meta__k">Год</div><div class="meta__v">2026</div></div>
         <div><div class="meta__k">Статус</div><div class="meta__v">В работе · каждый день</div></div>
+        </div>
       </div>
     </header>
 
