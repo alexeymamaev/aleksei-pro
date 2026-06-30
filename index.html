@@ -98,6 +98,7 @@
   .hero__img{
     position:absolute; right:64px; top:50px;
     width:460px; height:460px; z-index:1;
+    transition:transform .35s cubic-bezier(.22,.61,.36,1); will-change:transform;
   }
   .hero__text{
     position:absolute; left:var(--pad); top:50%;
@@ -150,7 +151,7 @@
   a.work{ text-decoration:none; color:inherit; }
 
   .work__media{ aspect-ratio:16/10; border-radius:8px; overflow:hidden; }
-  .work__media--tall{ aspect-ratio:19/20; }
+  .work__media--tall{ aspect-ratio:19/20; border-radius:30px; }
   .work__media img{ width:100%; height:100%; object-fit:cover; }
 
   .work__row{ display:flex; justify-content:space-between; align-items:baseline; }
@@ -185,7 +186,7 @@
   }
   a.work:hover .work__phone img{ transform:translateY(-8px); }
   /* первый телефон заезжает верхом на блок выше */
-  .work--first .work__phone{ margin-top:-235px; }
+  .work--first .work__phone{ margin-top:-235px; margin-bottom:0; }
 
   /* services */
   .services{
@@ -342,7 +343,7 @@
           <div class="work__row"><h3 class="work__title">Национальный портал памяти</h3></div>
           <div class="work__tag">Гос-портал · AI · карта</div>
           <div class="work__role">Казанская проектная мануфактура · арт-дирекшн</div>
-          <p class="work__desc">Государственный портал исторической памяти: книга памяти, каталог персоналий и поиск по большому архиву документов, плюс интерактивная карта мест. Строгая типографика и большие данные под институциональный масштаб.</p>
+          <p class="work__desc">Моя собственная концепция дизайна государственного портала исторической памяти: книга памяти, каталог персоналий, поиск по большому архиву документов и интерактивная карта мест. Проработал четыре версии главной страницы — строгая типографика, большой объём данных, институциональный масштаб. В продакшн концепция в итоге не пошла.</p>
           <div class="work__feats">
             <div class="work__feat"><svg width="20" height="20" viewBox="0 0 24 24" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="10.5" cy="10.5" r="6.5"/><line x1="21" y1="21" x2="15.5" y2="15.5"/></svg><span>Поиск по документам с AI</span></div>
             <div class="work__feat"><svg width="20" height="20" viewBox="0 0 24 24" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-6.5-5.6-6.5-10.5a6.5 6.5 0 0 1 13 0C18.5 15.4 12 21 12 21z"/><circle cx="12" cy="10.5" r="2.3"/></svg><span>Интерактивная карта мест</span></div>
@@ -406,5 +407,30 @@
   </div>
 </div>
 <footer class="namefoot">Алексей Мамаев</footer>
+
+<script>
+/* Аватар в hero — 3D-наклон «лицом к курсору» (rotateX/rotateY, до ±16°);
+   сильнее у аватара, плавно гаснет, когда курсор далеко. Плавность — CSS transition. */
+(function(){
+  var img = document.querySelector('.hero__img');
+  if(!img || !window.matchMedia('(hover:hover)').matches) return;
+  var MAX = 16; // максимальный наклон, градусы
+  function set(rx, ry){
+    img.style.transform = 'perspective(900px) rotateX(' + rx.toFixed(2) + 'deg) rotateY(' + ry.toFixed(2) + 'deg)';
+  }
+  window.addEventListener('mousemove', function(e){
+    var r = img.getBoundingClientRect();
+    var cx = r.left + r.width / 2, cy = r.top + r.height / 2;
+    var nx = (e.clientX - cx) / (r.width / 2);   // -1..1 на краях картинки
+    var ny = (e.clientY - cy) / (r.height / 2);
+    var dist = Math.hypot(nx, ny);               // 1 = край, >1 = снаружи
+    var falloff = dist <= 1 ? 1 : Math.max(0, 1 - (dist - 1) / 1.5);
+    nx = Math.max(-1, Math.min(1, nx));
+    ny = Math.max(-1, Math.min(1, ny));
+    set(ny * MAX * falloff, -nx * MAX * falloff);
+  }, {passive:true});
+  document.addEventListener('mouseleave', function(){ set(0, 0); });
+})();
+</script>
 </body>
 </html>
